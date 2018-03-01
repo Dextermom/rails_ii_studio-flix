@@ -14,6 +14,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      session[:user_id] = @user.id
       redirect_to @user, notice: "Thanks for signing up!"
     else
       render :new
@@ -39,10 +40,7 @@ class UsersController < ApplicationController
     redirect_to root_url, alert: "Account successfully deleted!"
   end
 
-  def self.authenticate(email, password)
-  user = User.find_by(email: email)
-  user && user.authenticate(password)
-end
+
 
   private
 
