@@ -39,6 +39,11 @@ class UsersController < ApplicationController
     redirect_to root_url, alert: "Account successfully deleted!"
   end
 
+  def self.authenticate(email, password)
+  user = User.find_by(email: email)
+  user && user.authenticate(password)
+end
+
   private
 
     def user_params
