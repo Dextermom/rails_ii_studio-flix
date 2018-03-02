@@ -11,6 +11,8 @@ it "destroys the user and redirects to the home page" do
     expect(current_path).to eq(root_path)
     expect(page).to have_text('Account successfully deleted!')
 
+    sign_in(user)
+
     visit users_path
 
     expect(page).not_to have_text(user.name)
