@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+before_action :set_movie, only: [:show, :edit, :update, :destroy]
 before_action :require_signin, except: [:index, :show]
 before_action :require_admin, except: [:index, :show]
   def index
@@ -10,14 +11,13 @@ when 'flops'
 when 'upcoming'
   @movies = Movie.upcoming
 when 'recent'
-  @movies = Movie.recent 
+  @movies = Movie.recent
 else
     @movies = Movie.released
   end
 end
 
   def show
-    @movie = Movie.find(params[:id])
     @fans = @movie.fans
     @genres = @movie.genres
 
@@ -27,11 +27,10 @@ end
   end
 
   def edit
-    @movie = Movie.find(params[:id])
+
   end
 
   def update
-    @movie = Movie.find(params[:id])
     if @movie.update(movie_params)
       redirect_to @movie, notice: "Movie successfully updated!"
     else
@@ -53,7 +52,6 @@ end
   end
 
   def destroy
-    @movie = Movie.find(params[:id])
     @movie.destroy
     redirect_to movies_url, alert: "Movie successfully deleted!"
   end
@@ -65,5 +63,8 @@ private
       permit(:title, :description, :rating, :released_on, :total_gross, :cast, :director, :duration, :image_file_name, genre_ids: [])
   end
 
+  def set_movie
+    @movie = Movie.find_by!(slug: params[:id])
+  end
 
 end
