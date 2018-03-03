@@ -7,6 +7,7 @@ before_action :require_admin, except: [:index, :show]
 
   def show
     @movie = Movie.find(params[:id])
+    @fans = @movie.fans
   end
 
   def edit
@@ -48,5 +49,5 @@ private
       permit(:title, :description, :rating, :released_on, :total_gross, :cast, :director, :duration, :image_file_name)
   end
 
-  
+
 end

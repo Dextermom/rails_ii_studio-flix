@@ -15,7 +15,8 @@ class Movie < ApplicationRecord
   validates :rating, inclusion: { in: RATINGS }
 
   has_many :reviews, dependent: :destroy
-
+  has_many :favorites, dependent: :destroy
+  has_many :fans, through: :favorites, source: :user
   def self.released
     where("released_on <= ?", Time.now).order("released_on desc")
   end
@@ -39,7 +40,7 @@ class Movie < ApplicationRecord
   def average_stars
     reviews.average(:stars)
   end
-  
+
   def recent_reviews
     reviews.order('created_at desc').limit(2)
   end
